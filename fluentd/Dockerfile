@@ -2,8 +2,7 @@ FROM fluent/fluentd:latest
 
 USER root
 WORKDIR /
-RUN apt-get update -y && apt-get install -y netcat
-
+RUN apk add --update netcat-openbsd && rm -rf /var/cache/apk/*
 COPY entrypoint.sh /tmp/entrypoint.sh
 RUN chmod +x /tmp/entrypoint.sh
 
