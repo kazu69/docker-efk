@@ -1,9 +1,10 @@
 elasticsearch:
   image: elasticsearch:latest
-  command: elasticsearch -Des.network.host=0.0.0.0
+  container_name: elasticsearch
   ports:
     - '9200:9200'
 kibana:
+  container_name: kibana
   build: kibana/
   volumes:
     - ./kibana/config/kibana.yml:/opt/kibana/config/kibana.yml
@@ -12,6 +13,7 @@ kibana:
   links:
     - elasticsearch
 fluentd:
+  container_name: fluentd
   build: fluentd/
   volumes:
     - /var/lib/docker/containers:/var/lib/docker/containers
@@ -20,6 +22,7 @@ fluentd:
   ports:
     - '24224:24224'
 nginx:
+  container_name: nginx
   build: nginx/
   links:
     - fluentd
@@ -31,6 +34,7 @@ nginx:
     fluentd-address: localhost:24224
     tag: docker.{{.FullID}}
 node_app:
+  container_name: node_app
   build: node_app/
   links:
     - fluentd
